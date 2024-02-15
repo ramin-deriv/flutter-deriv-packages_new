@@ -14,6 +14,11 @@ dependencies:
       path: packages/deriv_http_client
       ref: deriv_http_client-v1.0.0
 
+  flutter_system_proxy:
+    git:
+      url: git@github.com:BrowserStackCE/flutter_system_proxy.git
+      ref: main
+
   bloc: ^8.1.1
   crypto: ^3.0.2
   equatable: ^2.0.5
