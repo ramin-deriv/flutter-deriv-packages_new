@@ -1,3 +1,31 @@
+## 0.1.10+2
+
+ - **REFACTOR**: update_reference_to_git_dependencies ([#929](https://github.com/deriv-com/flutter-deriv-packages.git/issues/929)). ([0da684dc](https://github.com/deriv-com/flutter-deriv-packages.git/commit/0da684dc56251fe01991f6a5e36b76b627b379fd))
+
+## 0.1.10+1
+
+ - **FIX**(deriv_mobile_chart_wrapper): [GRWT-3474] Point_Highlight_Enlarges_when_navigating_back_to_same_chart_view ([#918](https://github.com/regentmarkets/flutter-deriv-packages/issues/918)). ([c751b552](https://github.com/regentmarkets/flutter-deriv-packages/commit/c751b552915c91e9386a90143a2291b512cd3dbd))
+
+## 0.1.10
+
+ - **FEAT**(deriv_mobile_chart_wrapper): [GRWT-3362] update chart package version ([#919](https://github.com/regentmarkets/flutter-deriv-packages/issues/919)). ([d79b9d5e](https://github.com/regentmarkets/flutter-deriv-packages/commit/d79b9d5e9d7216085e60c49be98a8cd0a7caea18))
+
+## 0.1.9+2
+
+ - Update a dependency to the latest release.
+
+## 0.1.9+1
+
+ - Update a dependency to the latest release.
+
+## 0.1.9
+
+ - **FEAT**(deriv_mobile_chart_wrapper): [DRGO-1484] Filter Drawing Tools to Show Only Enabled Options ([#905](https://github.com/regentmarkets/flutter-deriv-packages/issues/905)). ([a3fccd72](https://github.com/regentmarkets/flutter-deriv-packages/commit/a3fccd7284b6a56dd1e98942b02b6c29afb87512))
+
+## 0.1.8+2
+
+ - Update a dependency to the latest release.
+
 ## 0.1.8+1
 
  - **FIX**: [DRGO-1367] Apply Chart Tool Globally for Indicators and Asset-Specific for Drawing Tools ([#900](https://github.com/regentmarkets/flutter-deriv-packages/issues/900)). ([8ea63c8e](https://github.com/regentmarkets/flutter-deriv-packages/commit/8ea63c8e0c3cc73f2420e7b0069b3b60b54bf9b4))

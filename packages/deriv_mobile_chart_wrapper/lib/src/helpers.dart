@@ -50,7 +50,7 @@ String getIndicatorIconPath(IndicatorConfig config) {
 /// for the given [drawingToolType].
 String getDrawingToolIconPath(Type drawingToolType) {
   switch (drawingToolType) {
-    case LineDrawingToolConfig:
+    case LineDrawingToolConfigMobile:
       return lineIcon;
     case RayDrawingToolConfig:
       return rsiIcon;
@@ -60,19 +60,33 @@ String getDrawingToolIconPath(Type drawingToolType) {
 }
 
 /// Returns the list of drawing tools available for the chart.
-List<DrawingToolItemModel> getDrawingToolsList(BuildContext context) {
+/// [enabledDrawingToolTypes] is the set of drawing tools that are enabled to be
+/// available for the user to draw on the chart.
+List<DrawingToolItemModel> getDrawingToolsList(
+  BuildContext context, {
+  required Set<Type> enabledDrawingToolTypes,
+}) {
   List<DrawingToolItemModel> drawingTools = <DrawingToolItemModel>[
     DrawingToolItemModel(
       title: context.mobileChartWrapperLocalizations.labelLine,
       icon: lineIcon,
-      config: const LineDrawingToolConfig(
-        lineStyle: LineStyle(thickness: 0.9, color: BrandColors.coral),
+      config: const LineDrawingToolConfigMobile(
+        lineStyle: LineStyle(
+          thickness: 0.9,
+          color: BrandColors.coral,
+          markerRadius: 4,
+        ),
       ),
     ),
     // Add more drawing tools here.
   ];
 
-  return drawingTools;
+  // Return only enabled drawing tools by filtering the list of all drawing
+  // tools with the enabled drawing tools.
+  return drawingTools
+      .where(
+          (tool) => enabledDrawingToolTypes.contains(tool.config.runtimeType))
+      .toList();
 }
 
 String getDrawingToolTitleWithCount(
@@ -89,7 +103,7 @@ String getDrawingToolTitle(
   DrawingToolConfig config,
 ) {
   switch (config.runtimeType) {
-    case LineDrawingToolConfig:
+    case LineDrawingToolConfigMobile:
       return context.mobileChartWrapperLocalizations.labelLine;
     case RayDrawingToolConfig:
       return context.mobileChartWrapperLocalizations.labelRay;
