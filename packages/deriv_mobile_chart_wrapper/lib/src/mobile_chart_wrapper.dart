@@ -385,47 +385,38 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
   @override
   Widget build(BuildContext context) =>
       // TODO(Ramin): Check if we can consider using Chart widget directly.
-      FutureBuilder<ChartLocalization>(
-          future: ChartLocalization.load(Locale(_localizations.localeName)),
-          builder: (_, chartLocalizationSnapshot) {
-            if (!chartLocalizationSnapshot.hasData) {
-              return const SizedBox();
-            }
-
-            return DerivChart(
-              localizations: chartLocalizationSnapshot.data!,
-              indicatorsRepo: widget.showIndicators && _indicatorsRepo != null
-                  ? _indicatorsRepo
-                  : AddOnsRepository<IndicatorConfig>(
-                      createAddOn: (Map<String, dynamic> map) =>
-                          IndicatorConfig.fromJson(map),
-                      sharedPrefKey: widget.indicatorsStoreKey,
-                    ),
-              drawingToolsRepo: _drawingToolsRepo ??
-                  AddOnsRepository<DrawingToolConfig>(
-                    createAddOn: (Map<String, dynamic> map) =>
-                        DrawingToolConfig.fromJson(map),
-                    sharedPrefKey: widget.drawingToolsStoreKey,
-                  ),
-              drawingTools: _drawingTools,
-              controller: widget.controller,
-              mainSeries: widget.mainSeries,
-              markerSeries: widget.markerSeries,
-              pipSize: widget.pipSize,
-              granularity: widget.granularity,
-              onVisibleAreaChanged: widget.onVisibleAreaChanged,
-              isLive: widget.isLive,
-              dataFitEnabled: widget.dataFitEnabled,
-              opacity: widget.opacity,
-              chartAxisConfig: widget.chartAxisConfig,
-              annotations: widget.annotations,
-              // TODO: The 'activeSymbol' property will be deprecated in a future
-              //  release. It is currently irrelevant in the current chart package
-              //  implementation, as the AddOnsRepository is initialized externally
-              //  in the implementation.
-              activeSymbol: 'default',
-            );
-          });
+      DerivChart(
+        indicatorsRepo: widget.showIndicators && _indicatorsRepo != null
+            ? _indicatorsRepo
+            : AddOnsRepository<IndicatorConfig>(
+                createAddOn: (Map<String, dynamic> map) =>
+                    IndicatorConfig.fromJson(map),
+                sharedPrefKey: widget.indicatorsStoreKey,
+              ),
+        drawingToolsRepo: _drawingToolsRepo ??
+            AddOnsRepository<DrawingToolConfig>(
+              createAddOn: (Map<String, dynamic> map) =>
+                  DrawingToolConfig.fromJson(map),
+              sharedPrefKey: widget.drawingToolsStoreKey,
+            ),
+        drawingTools: _drawingTools,
+        controller: widget.controller,
+        mainSeries: widget.mainSeries,
+        markerSeries: widget.markerSeries,
+        pipSize: widget.pipSize,
+        granularity: widget.granularity,
+        onVisibleAreaChanged: widget.onVisibleAreaChanged,
+        isLive: widget.isLive,
+        dataFitEnabled: widget.dataFitEnabled,
+        opacity: widget.opacity,
+        chartAxisConfig: widget.chartAxisConfig,
+        annotations: widget.annotations,
+        // TODO: The 'activeSymbol' property will be deprecated in a future
+        //  release. It is currently irrelevant in the current chart package
+        //  implementation, as the AddOnsRepository is initialized externally
+        //  in the implementation.
+        activeSymbol: 'default',
+      );
 
   @override
   void dispose() {
