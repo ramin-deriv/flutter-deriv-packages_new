@@ -1,10 +1,12 @@
 import 'package:deriv_chart/deriv_chart.dart';
+import 'package:deriv_localizations/l10n/generated/deriv_mobile_chart_wrapper/deriv_mobile_chart_wrapper_localizations.dart';
 import 'package:deriv_mobile_chart_wrapper/src/constants.dart';
 import 'package:deriv_mobile_chart_wrapper/src/extensions.dart';
 import 'package:deriv_mobile_chart_wrapper/src/indicator_event_service.dart';
 import 'package:deriv_mobile_chart_wrapper/src/mobile_tools_ui/drawing_tools/drawing_tools_selector.dart';
 import 'package:deriv_mobile_chart_wrapper/src/models/config_item_model.dart';
 import 'package:deriv_mobile_chart_wrapper/src/models/indicator_tab_label.dart';
+import 'package:deriv_mobile_chart_wrapper/src/providers/chart_wrapper_localization_provider.dart';
 import 'package:deriv_ui/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +55,7 @@ class MobileChartWrapper extends StatefulWidget {
     this.loadingAnimationColor,
     this.eventTracker,
     this.showIndicators = true,
+    this.localizations,
     Key? key,
   }) : super(key: key);
 
@@ -177,6 +180,10 @@ class MobileChartWrapper extends StatefulWidget {
   /// Show indicators flag.
   final bool showIndicators;
 
+  /// The localizations instance for the chart wrapper.
+  /// If not provided, a default English localization will be used.
+  final DerivMobileChartWrapperLocalizations? localizations;
+
   @override
   MobileChartWrapperState createState() => MobileChartWrapperState();
 }
@@ -186,17 +193,30 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
   AddOnsRepository<IndicatorConfig>? _indicatorsRepo;
   AddOnsRepository<DrawingToolConfig>? _drawingToolsRepo;
   final DrawingTools _drawingTools = DrawingTools();
+  late DerivMobileChartWrapperLocalizations _localizations;
 
   @override
   void initState() {
     super.initState();
-
+    _initLocalizations();
     _initRepos();
+  }
+
+  Future<void> _initLocalizations() async {
+    _localizations = widget.localizations ??
+        await DerivMobileChartWrapperLocalizations.delegate
+            .load(const Locale('en'));
   }
 
   @override
   void didUpdateWidget(covariant MobileChartWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // Update localizations if provided instance changes
+    if (widget.localizations != null &&
+        widget.localizations != oldWidget.localizations) {
+      _localizations = widget.localizations!;
+    }
 
     // Reload indicators if the indicators key has changed
     if (widget.indicatorsStoreKey != oldWidget.indicatorsStoreKey) {
@@ -297,20 +317,32 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
       builder: (_) =>
           ChangeNotifierProvider<AddOnsRepository<IndicatorConfig>>.value(
         value: indicatorsRepo,
-        child: SafeArea(
-          child: DerivBottomSheet(
-            title: context.mobileChartWrapperLocalizations.labelIndicators,
-            child: MobileToolsBottomSheetContent(
-              selectedTab: indicatorsRepo.items.isEmpty
-                  ? IndicatorTabLabel.all
-                  : IndicatorTabLabel.active,
-              eventTracker: widget.eventTracker,
-            ),
+        child: ChartWrapperLocalizationProvider(
+          localizations: _localizations,
+          child: Builder(
+            builder: (BuildContext context) =>
+                _buildIndicatorsBottomSheetContent(context, indicatorsRepo),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildIndicatorsBottomSheetContent(
+    BuildContext context,
+    AddOnsRepository<IndicatorConfig> indicatorsRepo,
+  ) =>
+      SafeArea(
+        child: DerivBottomSheet(
+          title: context.mobileChartWrapperLocalizations.labelIndicators,
+          child: MobileToolsBottomSheetContent(
+            selectedTab: indicatorsRepo.items.isEmpty
+                ? IndicatorTabLabel.all
+                : IndicatorTabLabel.active,
+            eventTracker: widget.eventTracker,
+          ),
+        ),
+      );
 
   void _showDrawingToolsSheet(
       AddOnsRepository<DrawingToolConfig> drawingToolsRepo) {
@@ -325,23 +357,30 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
       builder: (_) =>
           ChangeNotifierProvider<AddOnsRepository<DrawingToolConfig>>.value(
         value: drawingToolsRepo,
-        child: SafeArea(
-          child: DerivBottomSheet(
-            title: context.mobileChartWrapperLocalizations.labelDrawingTools,
-            child: DrawingToolsSelector(
-              enabledDrawingToolTypes:
-                  widget.toolsController?.enabledDrawingToolTypes ?? <Type>{},
-              onDrawingToolSelected: (DrawingToolConfig selectedDrawingTool) {
-                _drawingTools.onDrawingToolSelection(selectedDrawingTool);
-                _updateDrawingTools();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
+        child: ChartWrapperLocalizationProvider(
+          localizations: _localizations,
+          child: Builder(
+              builder: (BuildContext context) =>
+                  _buildToolsBottomSheetContent(context)),
         ),
       ),
     );
   }
+
+  Widget _buildToolsBottomSheetContent(BuildContext context) => SafeArea(
+        child: DerivBottomSheet(
+          title: context.mobileChartWrapperLocalizations.labelDrawingTools,
+          child: DrawingToolsSelector(
+            enabledDrawingToolTypes:
+                widget.toolsController?.enabledDrawingToolTypes ?? <Type>{},
+            onDrawingToolSelected: (DrawingToolConfig selectedDrawingTool) {
+              _drawingTools.onDrawingToolSelection(selectedDrawingTool);
+              _updateDrawingTools();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) =>
