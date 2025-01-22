@@ -40,7 +40,6 @@ class MobileChartWrapper extends StatefulWidget {
     this.opacity = 1.0,
     this.pipSize = 4,
     this.chartAxisConfig = const ChartAxisConfig(),
-    this.maxCurrentTickOffset,
     this.msPerPx,
     this.minIntervalWidth,
     this.maxIntervalWidth,
@@ -131,9 +130,6 @@ class MobileChartWrapper extends StatefulWidget {
 
   /// Whether the crosshair should be shown or not.
   final bool showCrosshair;
-
-  /// Max distance between rightBoundEpoch and nowEpoch in pixels.
-  final double? maxCurrentTickOffset;
 
   /// Specifies the zoom level of the chart.
   final double? msPerPx;
@@ -410,7 +406,12 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
         dataFitEnabled: widget.dataFitEnabled,
         opacity: widget.opacity,
         chartAxisConfig: widget.chartAxisConfig,
+        loadingAnimationColor: widget.loadingAnimationColor,
+        currentTickAnimationDuration: widget.currentTickAnimationDuration,
+        showCurrentTickBlinkAnimation: widget.showCurrentTickBlinkAnimation,
         annotations: widget.annotations,
+        showScrollToLastTickButton: widget.showScrollToLastTickButton,
+        theme: widget.theme,
         // TODO: The 'activeSymbol' property will be deprecated in a future
         //  release. It is currently irrelevant in the current chart package
         //  implementation, as the AddOnsRepository is initialized externally
