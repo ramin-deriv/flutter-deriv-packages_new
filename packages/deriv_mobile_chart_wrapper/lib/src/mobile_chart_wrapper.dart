@@ -411,6 +411,7 @@ class MobileChartWrapperState extends State<MobileChartWrapper> {
         opacity: widget.opacity,
         chartAxisConfig: widget.chartAxisConfig,
         annotations: widget.annotations,
+        theme: widget.theme,
         // TODO: The 'activeSymbol' property will be deprecated in a future
         //  release. It is currently irrelevant in the current chart package
         //  implementation, as the AddOnsRepository is initialized externally
