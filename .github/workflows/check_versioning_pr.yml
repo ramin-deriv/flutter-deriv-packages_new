@@ -21,7 +21,7 @@ jobs:
         id: check-pr
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
-          github-token: ${{ secrets.PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { data: pullRequests } = await github.rest.pulls.list({
               owner: context.repo.owner,
@@ -43,7 +43,7 @@ jobs:
       - name: Delete comment if exists
         uses: izhangzhihao/delete-comment@d075704468e1cf74e60944d9f335351213c34d85
         with:
-          github_token: ${{ secrets.PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: mobile-apps-deriv
           issue_number: ${{ github.event.number }}
 
@@ -51,7 +51,7 @@ jobs:
         if: ${{ contains(steps.check-pr.outputs.VERSIONING_PR_EXISTS, 'true') }}
         uses: marocchino/sticky-pull-request-comment@4b7290acd5c5b99ef9995db30e52150e705d2475
         with:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
             **Merge Is BLOCKED : we still have a chore(version) pr open, please merge that pr first **
 
